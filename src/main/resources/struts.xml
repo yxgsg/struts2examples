@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
+
+    <constant name="struts.devMode" value="true" />
+
+<!--    <package name="basicstruts2" extends="org.apache.org.apache.org.apache.org.apache.struts-default">-->
+<!--        <action name="index">-->
+<!--            <result>/index.jsp</result>-->
+<!--        </action>-->
+
+<!--        <action name="hello" class="org.apache.org.apache.org.apache.org.apache.org.apache.struts.helloworld.action.HelloWorldAction" method="execute">-->
+<!--            <result name="success">/HelloWorld.jsp</result>-->
+<!--        </action>-->
+
+<!--        <action name="registerInput" class="org.apache.org.apache.org.apache.org.apache.org.apache.struts.register.action.Register22" method="input">-->
+<!--            <result name="input">/register.jsp</result>-->
+<!--        </action>-->
+<!--        <action name="register" class="org.apache.org.apache.org.apache.org.apache.org.apache.struts.register.action.Register22" method="execute">-->
+<!--            <result name="input">/register.jsp</result>-->
+<!--            <result name="success">/thankyou.jsp</result>-->
+<!--        </action>-->
+<!--    </package>-->
+
+    <package name="basicstruts2" extends="struts-default">
+
+        <interceptors>
+            <interceptor-stack name="appDefaultStack">
+                <interceptor-ref name="defaultStack">
+                    <param name="exception.logEnabled">true</param>
+                    <param name="exception.logLevel">ERROR</param>
+                </interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="appDefaultStack"/>
+
+        <global-results>
+            <result name="securityerror">/securityerror.jsp</result>
+            <result name="error">/error.jsp</result>
+        </global-results>
+        
+        <global-exception-mappings>
+            <exception-mapping exception="org.apache.struts.register.exceptions.SecurityBreachException" result="securityerror"/>
+            <exception-mapping exception="java.lang.Exception" result="error"/>
+        </global-exception-mappings>
+        
+       <action name="actionspecificexception" class="org.apache.struts.register.action.Register" method="throwSecurityException">
+           <exception-mapping exception="org.apache.struts.register.exception.SecurityBreachException" result="login"/>
+           <result>/register.jsp</result>
+           <result name="login">/login.jsp</result>
+       </action>
+
+        <!-- If no class attribute is specified the framework will assume success and
+        render the result index.jsp -->
+        <!-- If no name value for the result node is specified the success value is the default -->
+        <action name="index">
+            <result>/index.jsp</result>
+        </action>
+
+        <!-- If the URL is hello.action then call the execute method of class HelloWorldAction.
+        If the result returned by the execute method is success render the HelloWorld.jsp -->
+        <action name="hello" class="org.apache.struts.helloworld.action.HelloWorldAction" method="execute">
+            <result name="success">/HelloWorld.jsp</result>
+        </action>
+
+        <action name="registerInput" class="org.apache.struts.register.action.Register" method="input" >
+            <result name="input">/register.jsp</result>
+        </action>
+
+        <action name="register" class="org.apache.struts.register.action.Register" method="execute">
+            <result name="success">/thankyou.jsp</result>
+            <result name="input">/register.jsp</result>
+        </action>
+
+    </package>
+
+    <constant name="struts.custom.i18n.resources" value="global"/>
+
+</struts>
